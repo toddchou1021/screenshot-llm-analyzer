@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Screenshot Analyzer</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="prompt-panel" aria-label="Saved prompts">
+        <div class="prompt-header">
+          <h2>Prompts</h2>
+        </div>
+        <div id="promptList" class="prompt-list"></div>
+      </aside>
+
+      <section class="workspace">
+        <header class="topbar">
+          <div>
+            <h1>Screenshot Analyzer</h1>
+            <p id="hotkeyStatus">Loading hotkey...</p>
+          </div>
+          <div class="actions">
+            <button id="captureButton" type="button">Capture</button>
+            <button id="folderButton" type="button">Screenshots</button>
+          </div>
+        </header>
+
+        <section class="settings-panel" aria-label="Settings">
+          <label>
+            Gemini API key
+            <input id="apiKeyInput" type="password" autocomplete="off" placeholder="Paste your Gemini API key" />
+          </label>
+
+          <div class="field-row">
+            <label>
+              Model
+              <select id="modelInput">
+                <option value="gemma-4-31b-it">gemma-4-31b-it</option>
+                <option value="gemma-4-26b-a4b-it">gemma-4-26b-a4b-it</option>
+              </select>
+            </label>
+            <label>
+              Capture hotkey
+              <input id="hotkeyInput" type="text" />
+            </label>
+          </div>
+
+          <label class="prompt-field">
+            System prompt
+            <textarea id="promptInput" spellcheck="true"></textarea>
+          </label>
+
+          <div class="settings-actions">
+            <button id="saveButton" type="button">Save Settings</button>
+            <span id="saveStatus" role="status"></span>
+          </div>
+        </section>
+
+        <section class="latest-panel" aria-label="Latest result">
+          <div class="section-heading">
+            <h2>Latest Result</h2>
+            <span id="latestTime"></span>
+          </div>
+          <div id="latestResult" class="result-body muted">No captures yet.</div>
+        </section>
+      </section>
+
+      <aside class="history-panel" aria-label="Analysis history">
+        <div class="history-header">
+          <h2>History</h2>
+          <button id="clearButton" type="button">Clear</button>
+        </div>
+        <div id="historyList" class="history-list"></div>
+      </aside>
+    </main>
+
+    <script src="./renderer.js"></script>
+  </body>
+</html>
