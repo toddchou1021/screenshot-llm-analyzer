@@ -2,7 +2,6 @@
 
 A local Electron app for capturing a selected screen region and sending the screenshot to Gemini for analysis using a saved prompt.
 
-繁體中文：
 這是一個本機 Electron 應用程式，可擷取螢幕上的指定區域，並使用儲存好的提示詞將截圖送到 Gemini 進行分析。
 
 ## Features
@@ -16,8 +15,6 @@ A local Electron app for capturing a selected screen region and sending the scre
 - Switch between supported Gemma models.
 - View previous analysis results in chronological history.
 - Delete history entries and their saved screenshots.
-
-繁體中文：
 
 - 以桌面應用程式執行，並顯示系統匣圖示。
 - 按 `Alt+S` 開始選取螢幕區域。
@@ -34,8 +31,6 @@ A local Electron app for capturing a selected screen region and sending the scre
 - Windows
 - A Gemini API key
 
-繁體中文：
-
 - Windows
 - Gemini API key
 
@@ -50,8 +45,6 @@ A local Electron app for capturing a selected screen region and sending the scre
 Google offers a Gemini API free tier in eligible countries with lower rate limits for testing. See the official [Gemini API pricing](https://ai.google.dev/gemini-api/docs/pricing) and [rate limits](https://ai.google.dev/gemini-api/docs/quota) pages for the current free-tier details.
 
 As of 2026/04/29, Google provides 1,500 free requests per day for each of the two built-in Gemma 4 models listed below. Google can change free-tier quotas over time, and your active limits can be checked in Google AI Studio.
-
-繁體中文：
 
 1. 前往 [Google AI Studio](https://aistudio.google.com/)。
 2. 使用你的 Google 帳號登入。
@@ -75,8 +68,6 @@ The app stores settings and screenshots under:
 
 API keys are saved locally in that settings folder and are not stored in this repository.
 
-繁體中文：
-
 請從 [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest) 下載最新的 Windows 安裝檔（`Screenshot.Analyzer.Setup.1.0.4.exe`）。
 
 應用程式會將設定與截圖儲存在：
@@ -96,8 +87,6 @@ npm install
 npm start
 ```
 
-繁體中文：
-
 若要從原始碼執行專案：
 
 ```powershell
@@ -113,8 +102,6 @@ The app includes two selectable Gemini API model IDs:
 - `gemma-4-26b-a4b-it`
 
 `gemma-4-26b-a4b-it` is the recommended default. `gemma-4-31b-it` is also available if you want to compare output quality for a specific screenshot or prompt.
-
-繁體中文：
 
 本應用程式內建兩個可選的 Gemini API model ID：
 
@@ -134,8 +121,6 @@ The app includes two selectable Gemini API model IDs:
 7. Drag to select an area.
 8. Press `Enter` to analyze the screenshot or `Esc` to cancel.
 
-繁體中文：
-
 1. 啟動 Screenshot Analyzer。
 2. 貼上你的 Gemini API key。
 3. 選擇模型。
@@ -150,15 +135,11 @@ The app includes two selectable Gemini API model IDs:
 - Screen selection uses a frozen preview of the current display.
 - DRM-protected video, such as some Netflix playback, may still appear black in screenshots because the operating system or browser blocks app-level capture of protected video frames.
 
-繁體中文：
-
 - 螢幕選取會使用目前畫面的凍結預覽。
 - DRM 保護的影片，例如部分 Netflix 播放內容，仍可能在截圖中顯示為黑畫面，因為作業系統或瀏覽器會阻擋應用程式層級擷取受保護的影像畫面。
 
 ## License
 
 MIT
-
-繁體中文：
 
 MIT
