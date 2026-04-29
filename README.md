@@ -177,7 +177,3 @@ The app includes two selectable Gemini API model IDs:
 ## License
 
 MIT
-
-----------
-
-MIT
