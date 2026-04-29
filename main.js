@@ -53,6 +53,47 @@ function screenshotsDir() {
   return path.join(app.getPath("userData"), "screenshots");
 }
 
+async function migrateLegacyUserData() {
+  const currentDir = app.getPath("userData");
+  const legacyDir = path.join(app.getPath("appData"), "local-check-app");
+
+  if (path.resolve(currentDir) === path.resolve(legacyDir)) return;
+
+  const legacySettings = path.join(legacyDir, "settings.json");
+  const legacyHistory = path.join(legacyDir, "history.json");
+  const legacyScreenshots = path.join(legacyDir, "screenshots");
+  const currentSettings = settingsPath();
+  const currentHistory = historyPath();
+  const currentScreenshots = screenshotsDir();
+
+  if (await pathExists(legacySettings)) {
+    await copyIfMissing(legacySettings, currentSettings);
+  }
+
+  if (await pathExists(legacyHistory)) {
+    await copyIfMissing(legacyHistory, currentHistory);
+  }
+
+  if ((await pathExists(legacyScreenshots)) && !(await pathExists(currentScreenshots))) {
+    await fs.cp(legacyScreenshots, currentScreenshots, { recursive: true });
+  }
+}
+
+async function pathExists(targetPath) {
+  try {
+    await fs.access(targetPath);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function copyIfMissing(sourcePath, targetPath) {
+  if (await pathExists(targetPath)) return;
+  await fs.mkdir(path.dirname(targetPath), { recursive: true });
+  await fs.copyFile(sourcePath, targetPath);
+}
+
 async function readJson(file, fallback) {
   try {
     const raw = await fs.readFile(file, "utf8");
@@ -803,6 +844,7 @@ ipcMain.on("confirm-cancel", (_event, id) => {
 });
 
 app.whenReady().then(async () => {
+  await migrateLegacyUserData();
   await loadState();
   createMainWindow();
   createTray();
