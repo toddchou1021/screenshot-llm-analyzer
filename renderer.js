@@ -59,10 +59,14 @@ function renderHistory(history) {
   for (const entry of history) {
     const item = document.createElement("div");
     item.className = `history-item${entry.error ? " has-error" : ""}`;
+    const thumbnail = entry.thumbnailUrl
+      ? `<img class="history-thumbnail" src="${entry.thumbnailUrl}" alt="">`
+      : `<span class="history-thumbnail is-empty" aria-hidden="true"></span>`;
     item.innerHTML = `
       <button class="history-delete" type="button" aria-label="Delete analysis">x</button>
       <span class="history-date">${formatDate(entry.createdAt)}</span>
       <span class="history-preview">${escapeHtml(entry.error || entry.result || "No text result")}</span>
+      ${thumbnail}
     `;
     item.addEventListener("click", () => window.screenshotApp.showEntryPopup(entry.id));
     item.querySelector(".history-delete").addEventListener("click", async (event) => {

@@ -7,16 +7,37 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body class="popup-body">
-    <main class="popup-shell">
-      <header class="popup-header">
-        <div>
-          <h1 id="popupTitle">Analysis</h1>
-          <p id="popupMeta"></p>
-        </div>
-        <button id="openScreenshotButton" type="button">Open Screenshot</button>
-      </header>
-      <img id="popupImage" alt="Captured screenshot" />
-      <pre id="popupResult"></pre>
+    <main class="popup-layout">
+      <aside class="popup-rerun-pane">
+        <h2>Rerun Settings</h2>
+        <label class="popup-field">
+          <span>Model</span>
+          <select id="popupModelInput">
+            <option value="gemma-4-26b-a4b-it">gemma-4-26b-a4b-it</option>
+            <option value="gemma-4-31b-it">gemma-4-31b-it</option>
+          </select>
+        </label>
+        <label class="popup-field">
+          <span>Prompt</span>
+          <textarea id="popupPromptInput" rows="12"></textarea>
+        </label>
+      </aside>
+      <section class="popup-shell">
+        <header class="popup-header">
+          <div>
+            <h1 id="popupTitle">Analysis</h1>
+            <p id="popupMeta"></p>
+          </div>
+          <div class="popup-actions">
+            <button id="previousResultButton" type="button">Previous Result</button>
+            <button id="nextResultButton" type="button">Next Result</button>
+            <button id="retryButton" type="button">Retry</button>
+            <button id="openScreenshotButton" type="button">Open Screenshot</button>
+          </div>
+        </header>
+        <img id="popupImage" alt="Captured screenshot" />
+        <pre id="popupResult"></pre>
+      </section>
     </main>
     <script src="./popup.js"></script>
   </body>

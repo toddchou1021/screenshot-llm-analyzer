@@ -1,7 +1,7 @@
 {
   "name": "screenshot-llm-analyzer",
   "productName": "Screenshot Analyzer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Background screenshot analyzer using the Gemini API.",
   "main": "main.js",
   "scripts": {

@@ -1,5 +1,6 @@
 const confirmImage = document.querySelector("#confirmImage");
 const confirmPromptList = document.querySelector("#confirmPromptList");
+const confirmPromptInput = document.querySelector("#confirmPromptInput");
 const analyzeButton = document.querySelector("#analyzeButton");
 const cancelButton = document.querySelector("#cancelButton");
 
@@ -11,10 +12,14 @@ window.screenshotApp.onConfirmEntry((entry) => {
   activeId = entry.id;
   selectedPrompt = entry.prompt || "";
   confirmImage.src = entry.screenshotUrl;
+  confirmPromptInput.value = selectedPrompt;
   renderPromptList(entry);
 });
 
 window.addEventListener("keydown", (event) => {
+  if (event.target === confirmPromptInput && event.key === "Enter" && !event.ctrlKey) {
+    return;
+  }
   if (event.key === "Enter") {
     accept();
   }
@@ -29,6 +34,7 @@ cancelButton.addEventListener("click", cancel);
 function accept() {
   if (!activeId || settled) return;
   settled = true;
+  selectedPrompt = confirmPromptInput.value;
   window.screenshotApp.acceptConfirmation(activeId, selectedPrompt);
 }
 
@@ -61,6 +67,7 @@ function renderPromptList(entry) {
     `;
     item.addEventListener("click", () => {
       selectedPrompt = prompt;
+      confirmPromptInput.value = prompt;
       renderPromptList({ ...entry, promptHistory: prompts });
     });
     confirmPromptList.append(item);

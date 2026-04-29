@@ -23,7 +23,7 @@ const FIXED_OUTPUT_INSTRUCTION =
 
 const DEFAULT_SETTINGS = {
   apiKey: "",
-  model: "gemma-4-31b-it",
+  model: "gemma-4-26b-a4b-it",
   hotkey: "Alt+S",
   systemPrompt: DEFAULT_SYSTEM_PROMPT,
   promptHistory: [],
@@ -231,7 +231,10 @@ function rememberPromptText(prompt) {
 function appState() {
   return {
     settings,
-    history: history.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+    history: history
+      .slice()
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .map(toHistoryEntry),
     registeredHotkey,
     paths: {
       settings: settingsPath(),
@@ -239,6 +242,28 @@ function appState() {
       screenshots: screenshotsDir(),
     },
   };
+}
+
+function toHistoryEntry(entry) {
+  return {
+    ...entry,
+    thumbnailUrl: getScreenshotThumbnailUrl(entry.screenshotPath),
+  };
+}
+
+function getScreenshotThumbnailUrl(filePath) {
+  if (!filePath) return "";
+
+  const image = nativeImage.createFromPath(filePath);
+  if (image.isEmpty()) return "";
+
+  return image
+    .resize({
+      width: 96,
+      height: 64,
+      quality: "good",
+    })
+    .toDataURL();
 }
 
 function sendAppState() {
@@ -519,13 +544,13 @@ function normalizeRect(rect) {
   };
 }
 
-async function analyzeScreenshot(filePath, prompt = settings.systemPrompt) {
+async function analyzeScreenshot(filePath, prompt = settings.systemPrompt, modelName = settings.model) {
   if (!settings.apiKey) {
     throw new Error("Paste and save your Gemini API key before running analysis.");
   }
 
   const base64Image = await fs.readFile(filePath, "base64");
-  const model = normalizeModel(settings.model);
+  const model = normalizeGeminiModel(modelName);
   const userPrompt = normalizePrompt(prompt) || settings.systemPrompt;
   const response = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(
@@ -776,10 +801,10 @@ function sendTransientStatus(message) {
 
 function showResultPopup(entry) {
   const popup = new BrowserWindow({
-    width: 760,
-    height: 620,
-    minWidth: 520,
-    minHeight: 420,
+    width: 1040,
+    height: 660,
+    minWidth: 860,
+    minHeight: 520,
     title: entry.error ? "Screenshot Analysis Error" : "Screenshot Analysis",
     icon: APP_ICON_PATH,
     parent: mainWindow && mainWindow.isVisible() ? mainWindow : undefined,
@@ -801,6 +826,81 @@ function toRendererEntry(entry) {
     ...entry,
     screenshotUrl: entry.screenshotPath ? nativeImage.createFromPath(entry.screenshotPath).toDataURL() : "",
   };
+}
+
+function sameScreenshotPath(left, right) {
+  if (!left || !right) return false;
+  return path.resolve(left) === path.resolve(right);
+}
+
+function getEntriesForSameScreenshot(entry) {
+  if (!entry?.screenshotPath) return [];
+
+  return history
+    .filter((item) => sameScreenshotPath(item.screenshotPath, entry.screenshotPath))
+    .sort((a, b) => {
+      const dateDiff = new Date(a.createdAt) - new Date(b.createdAt);
+      return dateDiff || String(a.id).localeCompare(String(b.id));
+    });
+}
+
+function getAdjacentHistoryEntry(id, direction) {
+  const current = history.find((item) => item.id === id);
+  if (!current) return null;
+
+  const related = getEntriesForSameScreenshot(current);
+  const currentIndex = related.findIndex((item) => item.id === id);
+  if (currentIndex === -1) return null;
+
+  const offset = direction === "next" ? 1 : -1;
+  return related[currentIndex + offset] || null;
+}
+
+function getEntryNavigation(id) {
+  return {
+    previous: Boolean(getAdjacentHistoryEntry(id, "previous")),
+    next: Boolean(getAdjacentHistoryEntry(id, "next")),
+  };
+}
+
+function isScreenshotReferenced(filePath) {
+  return history.some((entry) => sameScreenshotPath(entry.screenshotPath, filePath));
+}
+
+async function retryAnalysis(id, options = {}) {
+  const source = history.find((item) => item.id === id);
+  if (!source) {
+    throw new Error("Analysis entry not found.");
+  }
+  if (!source.screenshotPath) {
+    throw new Error("This analysis has no screenshot to retry.");
+  }
+  if (!(await pathExists(source.screenshotPath))) {
+    throw new Error("The original screenshot file no longer exists.");
+  }
+
+  const prompt = normalizePrompt(options.prompt ?? source.prompt) || settings.systemPrompt;
+  const model = normalizeGeminiModel(options.model ?? source.model ?? settings.model);
+  const retryEntry = {
+    id: crypto.randomUUID(),
+    createdAt: new Date().toISOString(),
+    screenshotPath: source.screenshotPath,
+    model,
+    prompt,
+    result: "",
+    error: "",
+  };
+
+  try {
+    retryEntry.result = await analyzeScreenshot(source.screenshotPath, prompt, model);
+  } catch (error) {
+    retryEntry.error = error.message || String(error);
+  }
+
+  history.unshift(retryEntry);
+  await writeJson(historyPath(), history);
+  sendAppState();
+  return toRendererEntry(retryEntry);
 }
 
 ipcMain.handle("get-state", () => appState());
@@ -843,12 +943,27 @@ ipcMain.handle("show-entry-popup", (_event, id) => {
   if (entry) showResultPopup(entry);
 });
 
+ipcMain.handle("retry-analysis", async (_event, id, options) => {
+  return retryAnalysis(id, options);
+});
+
+ipcMain.handle("get-adjacent-entry", (_event, id, direction) => {
+  const entry = getAdjacentHistoryEntry(id, direction);
+  return entry ? toRendererEntry(entry) : null;
+});
+
+ipcMain.handle("get-entry-navigation", (_event, id) => {
+  return getEntryNavigation(id);
+});
+
 ipcMain.handle("delete-entry", async (_event, id) => {
   const index = history.findIndex((item) => item.id === id);
   if (index === -1) return { ok: false };
 
   const [entry] = history.splice(index, 1);
-  await deleteScreenshotIfManaged(entry.screenshotPath);
+  if (!isScreenshotReferenced(entry.screenshotPath)) {
+    await deleteScreenshotIfManaged(entry.screenshotPath);
+  }
   await writeJson(historyPath(), history);
   sendAppState();
   return { ok: true };
