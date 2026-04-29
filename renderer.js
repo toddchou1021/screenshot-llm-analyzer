@@ -13,7 +13,11 @@ const historyList = document.querySelector("#historyList");
 const latestResult = document.querySelector("#latestResult");
 const latestTime = document.querySelector("#latestTime");
 
+const LIST_BATCH_SIZE = 20;
+
 let currentState;
+let visiblePromptCount = LIST_BATCH_SIZE;
+let visibleHistoryCount = LIST_BATCH_SIZE;
 
 function renderState(state) {
   currentState = state;
@@ -56,7 +60,8 @@ function renderHistory(history) {
     return;
   }
 
-  for (const entry of history) {
+  const visibleHistory = history.slice(0, visibleHistoryCount);
+  for (const entry of visibleHistory) {
     const item = document.createElement("div");
     item.className = `history-item${entry.error ? " has-error" : ""}`;
     const thumbnail = entry.thumbnailUrl
@@ -75,6 +80,15 @@ function renderHistory(history) {
     });
     historyList.append(item);
   }
+
+  if (history.length > visibleHistory.length) {
+    historyList.append(
+      createShowMoreButton(history.length - visibleHistory.length, () => {
+        visibleHistoryCount += LIST_BATCH_SIZE;
+        renderHistory(history);
+      })
+    );
+  }
 }
 
 function renderPromptHistory(prompts, activePrompt) {
@@ -87,7 +101,8 @@ function renderPromptHistory(prompts, activePrompt) {
     return;
   }
 
-  prompts.forEach((prompt, index) => {
+  const visiblePrompts = prompts.slice(0, visiblePromptCount);
+  visiblePrompts.forEach((prompt, index) => {
     const item = document.createElement("div");
     item.className = `prompt-item${prompt === activePrompt ? " is-active" : ""}`;
     item.innerHTML = `
@@ -116,6 +131,24 @@ function renderPromptHistory(prompts, activePrompt) {
     });
     promptList.append(item);
   });
+
+  if (prompts.length > visiblePrompts.length) {
+    promptList.append(
+      createShowMoreButton(prompts.length - visiblePrompts.length, () => {
+        visiblePromptCount += LIST_BATCH_SIZE;
+        renderPromptHistory(prompts, activePrompt);
+      })
+    );
+  }
+}
+
+function createShowMoreButton(remainingCount, onClick) {
+  const button = document.createElement("button");
+  button.className = "list-more-button";
+  button.type = "button";
+  button.textContent = `Show ${Math.min(LIST_BATCH_SIZE, remainingCount)} More`;
+  button.addEventListener("click", onClick);
+  return button;
 }
 
 function renderLatest(entry) {

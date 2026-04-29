@@ -211,26 +211,6 @@ h2 {
   width: min(680px, 72%);
 }
 
-.socrates-hero {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(90deg, rgba(5, 18, 26, 0.98) 0 45%, rgba(5, 18, 26, 0.72) 62%, rgba(5, 18, 26, 0.24)),
-    url("./assets/socrates-cyberpunk-hero.png") calc(100% + 120px) center / auto 100% no-repeat;
-  opacity: 0.95;
-}
-
-.socrates-hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 5px),
-    linear-gradient(90deg, transparent 0 58%, rgba(0, 216, 255, 0.15));
-  mix-blend-mode: screen;
-  opacity: 0.42;
-}
-
 .latest-panel {
   flex: 1;
   min-height: 260px;
@@ -479,6 +459,16 @@ textarea {
   display: block;
 }
 
+.list-more-button {
+  width: 100%;
+  min-height: 42px;
+  border-color: rgba(0, 216, 255, 0.42);
+  border-radius: 7px;
+  color: var(--accent);
+  background: rgba(2, 14, 22, 0.72);
+  font-size: 13px;
+}
+
 .empty-history {
   color: var(--muted);
   font-size: 13px;
@@ -714,10 +704,6 @@ textarea {
 
   .settings-content {
     width: 100%;
-  }
-
-  .socrates-hero {
-    opacity: 0.36;
   }
 
   .field-row {

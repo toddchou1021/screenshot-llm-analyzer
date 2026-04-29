@@ -230,6 +230,17 @@ function rememberPromptText(prompt) {
   ].slice(0, 60);
 }
 
+async function rememberActivePrompt(prompt) {
+  const text = normalizePrompt(prompt);
+  if (!text) return settings.systemPrompt;
+
+  settings.systemPrompt = text;
+  rememberPromptText(text);
+  settings.promptHistory = normalizePromptHistory(settings.promptHistory, settings.systemPrompt);
+  await writeJson(settingsPath(), settings);
+  return settings.systemPrompt;
+}
+
 function appState() {
   return {
     settings,
@@ -729,11 +740,8 @@ async function acceptConfirmation(id, prompt) {
   const pending = pendingConfirmations.get(id);
   if (!pending || pending.settled) return;
 
-  const selectedPrompt = normalizePrompt(prompt) || settings.systemPrompt;
+  const selectedPrompt = await rememberActivePrompt(prompt);
   pending.prompt = selectedPrompt;
-  settings.systemPrompt = selectedPrompt;
-  settings.promptHistory = normalizePromptHistory(settings.promptHistory, settings.systemPrompt);
-  await writeJson(settingsPath(), settings);
   sendAppState();
 
   pending.settled = true;
@@ -883,6 +891,9 @@ async function retryAnalysis(id, options = {}) {
 
   const prompt = normalizePrompt(options.prompt ?? source.prompt) || settings.systemPrompt;
   const model = normalizeGeminiModel(options.model ?? source.model ?? settings.model);
+  if (normalizePrompt(options.prompt)) {
+    await rememberActivePrompt(prompt);
+  }
   const retryEntry = {
     id: crypto.randomUUID(),
     createdAt: new Date().toISOString(),
