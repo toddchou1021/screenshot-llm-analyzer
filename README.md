@@ -20,6 +20,16 @@ A local Electron app for capturing a selected screen region and sending the scre
 - Node.js and npm
 - A Gemini API key
 
+## Getting a free Gemini API key
+
+1. Go to [Google AI Studio](https://aistudio.google.com/).
+2. Sign in with your Google account.
+3. Open the [API keys page](https://aistudio.google.com/app/apikey).
+4. Click **Create API key**.
+5. Copy the key and paste it into the **Gemini API key** field in this app.
+
+Google offers a Gemini API free tier in eligible countries with lower rate limits for testing. See the official [Gemini API pricing](https://ai.google.dev/gemini-api/docs/pricing) and [rate limits](https://ai.google.dev/gemini-api/docs/quota) pages for the current free-tier details.
+
 ## Setup
 
 ```powershell
@@ -30,10 +40,19 @@ npm start
 The app stores settings and screenshots under:
 
 ```text
-%APPDATA%\local-check-app
+%APPDATA%\screenshot-llm-analyzer
 ```
 
 API keys are saved locally in that settings folder and are not stored in this repository.
+
+## Built-in models
+
+The app includes two selectable Gemini API model IDs:
+
+- `gemma-4-31b-it`
+- `gemma-4-26b-a4b-it`
+
+In current testing, `gemma-4-26b-a4b-it` is usually faster and seems to follow the user prompt instructions more consistently. `gemma-4-31b-it` is also available if you want to compare output quality for a specific screenshot or prompt.
 
 ## Usage
 
