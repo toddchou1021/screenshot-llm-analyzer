@@ -54,9 +54,10 @@ function renderPromptList(entry) {
     const item = document.createElement("button");
     item.type = "button";
     item.className = `confirm-prompt-item${prompt === selectedPrompt ? " is-active" : ""}`;
+    item.title = prompt;
     item.innerHTML = `
       <span class="confirm-prompt-label">${index === 0 ? "Current" : `Saved #${index}`}</span>
-      <span class="confirm-prompt-preview">${escapeHtml(prompt)}</span>
+      <span class="confirm-prompt-preview">${escapeHtml(formatPromptPreview(prompt))}</span>
     `;
     item.addEventListener("click", () => {
       selectedPrompt = prompt;
@@ -87,4 +88,12 @@ function escapeHtml(value) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+}
+
+function formatPromptPreview(prompt) {
+  const text = String(prompt || "").replace(/\s+/g, " ").trim();
+  const maxLength = 96;
+
+  if (text.length <= maxLength) return text;
+  return `${text.slice(0, maxLength - 3).trimEnd()}...`;
 }
