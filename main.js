@@ -40,6 +40,12 @@ let hotkeyRegistrationPaused = false;
 let overlayCaptureInProgress = false;
 let hotkeyResumeTimer = null;
 const pendingConfirmations = new Map();
+const APP_ICON_PATH = path.join(__dirname, "assets", "icon.ico");
+const APP_ICON_PNG_PATH = path.join(__dirname, "assets", "icon.png");
+
+if (process.platform === "win32") {
+  app.setAppUserModelId("com.toddchou.screenshot-llm-analyzer");
+}
 
 function settingsPath() {
   return path.join(app.getPath("userData"), "settings.json");
@@ -263,6 +269,7 @@ function createMainWindow() {
     minWidth: 920,
     minHeight: 620,
     title: "Screenshot Analyzer",
+    icon: APP_ICON_PATH,
     backgroundColor: "#f7f7f2",
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
@@ -285,10 +292,7 @@ function createMainWindow() {
 }
 
 function createTray() {
-  const icon = nativeImage.createFromDataURL(
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAVElEQVR4AWP4//8/AyUYTFhYWJj5x8DAwMDA+J+RkZHhP0ZGRsaAIbAKiYGBgZGBkYEBl0JQH6kGqC3ABhYGRiEwCqGqATawMDAwMDD8T0hI8B8A3nIVg3Qn6DIAAAAASUVORK5CYII="
-  );
-  tray = new Tray(icon);
+  tray = new Tray(loadAppIcon());
   tray.setToolTip("Screenshot Analyzer");
   tray.setContextMenu(
     Menu.buildFromTemplate([
@@ -315,8 +319,14 @@ function showMainWindow() {
 
 function notify(body) {
   if (Notification.isSupported()) {
-    new Notification({ title: "Screenshot Analyzer", body }).show();
+    new Notification({ title: "Screenshot Analyzer", body, icon: APP_ICON_PATH }).show();
   }
+}
+
+function loadAppIcon() {
+  const icon = nativeImage.createFromPath(APP_ICON_PATH);
+  if (!icon.isEmpty()) return icon;
+  return nativeImage.createFromPath(APP_ICON_PNG_PATH);
 }
 
 function registerCaptureHotkey() {
@@ -375,6 +385,7 @@ async function startCaptureOverlay() {
   overlayWindow = new BrowserWindow({
     ...bounds,
     frame: false,
+    icon: APP_ICON_PATH,
     transparent: false,
     resizable: false,
     movable: false,
@@ -649,6 +660,7 @@ function showConfirmationWindow(pending) {
     minWidth: 360,
     minHeight: 320,
     title: "Confirm Screenshot",
+    icon: APP_ICON_PATH,
     alwaysOnTop: true,
     backgroundColor: "#fafaf7",
     webPreferences: {
@@ -754,6 +766,7 @@ function showResultPopup(entry) {
     minWidth: 520,
     minHeight: 420,
     title: entry.error ? "Screenshot Analysis Error" : "Screenshot Analysis",
+    icon: APP_ICON_PATH,
     parent: mainWindow && mainWindow.isVisible() ? mainWindow : undefined,
     backgroundColor: "#fafaf7",
     webPreferences: {
