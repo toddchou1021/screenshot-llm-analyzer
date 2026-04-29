@@ -42,7 +42,9 @@ let hotkeyResumeTimer = null;
 const pendingConfirmations = new Map();
 const APP_ICON_PATH = path.join(__dirname, "assets", "icon.ico");
 const APP_ICON_PNG_PATH = path.join(__dirname, "assets", "icon.png");
-const APP_USER_MODEL_ID = "com.toddchou.screenshot-analyzer";
+const PACKAGED_APP_USER_MODEL_ID = "com.toddchou.screenshot-analyzer.app";
+const DEV_APP_USER_MODEL_ID = "com.toddchou.screenshot-analyzer.dev";
+const APP_USER_MODEL_ID = app.isPackaged ? PACKAGED_APP_USER_MODEL_ID : DEV_APP_USER_MODEL_ID;
 
 app.setName("Screenshot Analyzer");
 
