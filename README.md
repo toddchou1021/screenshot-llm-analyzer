@@ -12,6 +12,8 @@ Useful for:
 - Translating and interpreting text in videos, apps, or webpages.
 - Summarizing charts, slides, or documents.
 
+Download the latest Windows installer from the [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest) (`Screenshot.Analyzer.Setup.1.0.4.exe`).
+
 ----------
 
 截圖，然後交給 AI。
@@ -23,6 +25,8 @@ Useful for:
 - 針對螢幕上的內容提出具體問題，或取得靈感。
 - 翻譯與解讀影片、應用程式或網頁中的文字。
 - 摘要圖表、投影片或文件。
+
+請從 [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest) 下載最新的 Windows 安裝檔（`Screenshot.Analyzer.Setup.1.0.4.exe`）。
 
 ## Features
 
