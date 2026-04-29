@@ -51,4 +51,4 @@ Never commit `.env` files, API keys, generated screenshots, `dist/`, or `node_mo
 
 ## Agent-Specific Instructions
 
-After changing the codebase, review this `AGENTS.md` file before finishing. Update it when the change affects project structure, commands, testing, packaging, security, or contributor workflow. Do not edit it for changes that leave these guidelines accurate.
+After changing the codebase, review this `AGENTS.md` file before finishing. Update it when the change affects project structure, commands, testing, packaging, security, or contributor workflow. Only modify it when the guidance would otherwise become stale or incomplete.
