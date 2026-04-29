@@ -48,3 +48,7 @@ Pull requests should include a clear summary, tests performed, and screenshots o
 ## Security & Configuration Tips
 
 Never commit `.env` files, API keys, generated screenshots, `dist/`, or `node_modules/`. User settings and screenshots are stored under `%APPDATA%\screenshot-llm-analyzer`. Do not hard-code API keys.
+
+## Agent-Specific Instructions
+
+After changing the codebase, review this `AGENTS.md` file before finishing. Update it when the change affects project structure, commands, testing, packaging, security, or contributor workflow. Do not edit it for changes that leave these guidelines accurate.
