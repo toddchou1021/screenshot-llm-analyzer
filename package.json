@@ -1,6 +1,7 @@
 {
   "name": "screenshot-llm-analyzer",
-  "version": "1.0.0",
+  "productName": "Screenshot Analyzer",
+  "version": "1.0.1",
   "description": "Background screenshot analyzer using the Gemini API.",
   "main": "main.js",
   "scripts": {
@@ -22,7 +23,7 @@
     "url": "git+https://github.com/toddchou1021/screenshot-llm-analyzer.git"
   },
   "build": {
-    "appId": "com.toddchou.screenshot-llm-analyzer",
+    "appId": "com.toddchou.screenshot-analyzer",
     "productName": "Screenshot Analyzer",
     "directories": {
       "output": "dist"

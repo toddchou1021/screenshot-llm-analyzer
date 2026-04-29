@@ -42,11 +42,12 @@ let hotkeyResumeTimer = null;
 const pendingConfirmations = new Map();
 const APP_ICON_PATH = path.join(__dirname, "assets", "icon.ico");
 const APP_ICON_PNG_PATH = path.join(__dirname, "assets", "icon.png");
+const APP_USER_MODEL_ID = "com.toddchou.screenshot-analyzer";
 
 app.setName("Screenshot Analyzer");
 
 if (process.platform === "win32") {
-  app.setAppUserModelId("com.toddchou.screenshot-llm-analyzer");
+  app.setAppUserModelId(APP_USER_MODEL_ID);
 }
 
 function settingsPath() {
@@ -280,6 +281,7 @@ function createMainWindow() {
     },
   });
 
+  mainWindow.setIcon(loadAppIcon());
   mainWindow.loadFile(path.join(__dirname, "index.html"));
 
   mainWindow.on("close", (event) => {
