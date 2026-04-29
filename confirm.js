@@ -92,7 +92,7 @@ function escapeHtml(value) {
 
 function formatPromptPreview(prompt) {
   const text = String(prompt || "").replace(/\s+/g, " ").trim();
-  const maxLength = 96;
+  const maxLength = 62;
 
   if (text.length <= maxLength) return text;
   return `${text.slice(0, maxLength - 3).trimEnd()}...`;
