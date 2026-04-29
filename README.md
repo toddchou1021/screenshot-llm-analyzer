@@ -34,6 +34,7 @@ As of 2026/04/29, Google provides 1,500 free requests per day for each of the tw
 ## Installation
 
 Download the latest Windows installer from the [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest).
+Most users only need the `.exe` installer file, for example `Screenshot.Analyzer.Setup.1.0.2.exe`.
 
 The app stores settings and screenshots under:
 
