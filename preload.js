@@ -13,7 +13,7 @@ contextBridge.exposeInMainWorld("screenshotApp", {
   clearHistory: () => ipcRenderer.invoke("clear-history"),
   sendOverlaySelection: (selection) => ipcRenderer.send("overlay-selection", selection),
   cancelOverlay: () => ipcRenderer.send("overlay-cancel"),
-  acceptConfirmation: (id) => ipcRenderer.send("confirm-accept", id),
+  acceptConfirmation: (id, prompt) => ipcRenderer.send("confirm-accept", id, prompt),
   cancelConfirmation: (id) => ipcRenderer.send("confirm-cancel", id),
   onAppState: (callback) => {
     ipcRenderer.on("app-state", (_event, state) => callback(state));

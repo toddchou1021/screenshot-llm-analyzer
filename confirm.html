@@ -8,14 +8,20 @@
   </head>
   <body class="confirm-body">
     <main class="confirm-shell">
-      <header>
-        <h1>Confirm Screenshot</h1>
-        <p>Enter to analyze. Esc to cancel.</p>
-      </header>
-      <img id="confirmImage" alt="Captured screenshot preview" />
-      <div class="confirm-actions">
-        <button id="cancelButton" type="button">Cancel</button>
-        <button id="analyzeButton" type="button">Analyze</button>
+      <aside class="confirm-prompt-pane">
+        <h2>User Prompt</h2>
+        <div id="confirmPromptList" class="confirm-prompt-list"></div>
+      </aside>
+      <div class="confirm-preview-pane">
+        <header>
+          <h1>Confirm Screenshot</h1>
+          <p>Enter to analyze. Esc to cancel.</p>
+        </header>
+        <img id="confirmImage" alt="Captured screenshot preview" />
+        <div class="confirm-actions">
+          <button id="cancelButton" type="button">Cancel</button>
+          <button id="analyzeButton" type="button">Analyze</button>
+        </div>
       </div>
     </main>
     <script src="./confirm.js"></script>

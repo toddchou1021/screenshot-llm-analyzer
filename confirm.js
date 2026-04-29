@@ -1,13 +1,17 @@
 const confirmImage = document.querySelector("#confirmImage");
+const confirmPromptList = document.querySelector("#confirmPromptList");
 const analyzeButton = document.querySelector("#analyzeButton");
 const cancelButton = document.querySelector("#cancelButton");
 
 let activeId = "";
+let selectedPrompt = "";
 let settled = false;
 
 window.screenshotApp.onConfirmEntry((entry) => {
   activeId = entry.id;
+  selectedPrompt = entry.prompt || "";
   confirmImage.src = entry.screenshotUrl;
+  renderPromptList(entry);
 });
 
 window.addEventListener("keydown", (event) => {
@@ -25,11 +29,62 @@ cancelButton.addEventListener("click", cancel);
 function accept() {
   if (!activeId || settled) return;
   settled = true;
-  window.screenshotApp.acceptConfirmation(activeId);
+  window.screenshotApp.acceptConfirmation(activeId, selectedPrompt);
 }
 
 function cancel() {
   if (!activeId || settled) return;
   settled = true;
   window.screenshotApp.cancelConfirmation(activeId);
+}
+
+function renderPromptList(entry) {
+  const prompts = buildPromptChoices(entry.prompt, entry.promptHistory || []);
+  confirmPromptList.innerHTML = "";
+
+  if (!prompts.length) {
+    const empty = document.createElement("p");
+    empty.className = "empty-history";
+    empty.textContent = "No saved prompts.";
+    confirmPromptList.append(empty);
+    return;
+  }
+
+  prompts.forEach((prompt, index) => {
+    const item = document.createElement("button");
+    item.type = "button";
+    item.className = `confirm-prompt-item${prompt === selectedPrompt ? " is-active" : ""}`;
+    item.innerHTML = `
+      <span class="confirm-prompt-label">${index === 0 ? "Current" : `Saved #${index}`}</span>
+      <span class="confirm-prompt-preview">${escapeHtml(prompt)}</span>
+    `;
+    item.addEventListener("click", () => {
+      selectedPrompt = prompt;
+      renderPromptList({ ...entry, promptHistory: prompts });
+    });
+    confirmPromptList.append(item);
+  });
+}
+
+function buildPromptChoices(activePrompt, promptHistory) {
+  const seen = new Set();
+  const result = [];
+
+  for (const prompt of [activePrompt, ...promptHistory]) {
+    const text = String(prompt || "").trim();
+    if (!text || seen.has(text)) continue;
+    seen.add(text);
+    result.push(text);
+  }
+
+  return result;
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }

@@ -517,13 +517,14 @@ function normalizeRect(rect) {
   };
 }
 
-async function analyzeScreenshot(filePath) {
+async function analyzeScreenshot(filePath, prompt = settings.systemPrompt) {
   if (!settings.apiKey) {
     throw new Error("Paste and save your Gemini API key before running analysis.");
   }
 
   const base64Image = await fs.readFile(filePath, "base64");
   const model = normalizeModel(settings.model);
+  const userPrompt = normalizePrompt(prompt) || settings.systemPrompt;
   const response = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(
       model
@@ -538,7 +539,7 @@ async function analyzeScreenshot(filePath) {
         system_instruction: {
           parts: [
             {
-              text: `${FIXED_OUTPUT_INSTRUCTION}\n\nUser prompt:\n${settings.systemPrompt}`,
+              text: `${FIXED_OUTPUT_INSTRUCTION}\n\nUser prompt:\n${userPrompt}`,
             },
           ],
         },
@@ -657,10 +658,10 @@ async function runAnalysisFromSelection(selection) {
 
 function showConfirmationWindow(pending) {
   const confirmWindow = new BrowserWindow({
-    width: 440,
-    height: 390,
-    minWidth: 360,
-    minHeight: 320,
+    width: 760,
+    height: 450,
+    minWidth: 620,
+    minHeight: 360,
     title: "Confirm Screenshot",
     icon: APP_ICON_PATH,
     alwaysOnTop: true,
@@ -682,6 +683,8 @@ function showConfirmationWindow(pending) {
       createdAt: pending.createdAt,
       screenshotPath: pending.screenshotPath,
       screenshotUrl: nativeImage.createFromPath(pending.screenshotPath).toDataURL(),
+      prompt: settings.systemPrompt,
+      promptHistory: settings.promptHistory || [],
     });
   });
 
@@ -693,9 +696,16 @@ function showConfirmationWindow(pending) {
   });
 }
 
-function acceptConfirmation(id) {
+async function acceptConfirmation(id, prompt) {
   const pending = pendingConfirmations.get(id);
   if (!pending || pending.settled) return;
+
+  const selectedPrompt = normalizePrompt(prompt) || settings.systemPrompt;
+  pending.prompt = selectedPrompt;
+  settings.systemPrompt = selectedPrompt;
+  settings.promptHistory = normalizePromptHistory(settings.promptHistory, settings.systemPrompt);
+  await writeJson(settingsPath(), settings);
+  sendAppState();
 
   pending.settled = true;
   pendingConfirmations.delete(id);
@@ -725,15 +735,16 @@ async function cancelConfirmation(id) {
 async function analyzeConfirmedScreenshot(pending) {
   sendTransientStatus("Analyzing screenshot...");
   let entry;
+  const prompt = normalizePrompt(pending.prompt) || settings.systemPrompt;
 
   try {
-    const result = await analyzeScreenshot(pending.screenshotPath);
+    const result = await analyzeScreenshot(pending.screenshotPath, prompt);
     entry = {
       id: pending.id,
       createdAt: pending.createdAt,
       screenshotPath: pending.screenshotPath,
       model: settings.model,
-      prompt: settings.systemPrompt,
+      prompt,
       result,
       error: "",
     };
@@ -743,7 +754,7 @@ async function analyzeConfirmedScreenshot(pending) {
       createdAt: pending.createdAt,
       screenshotPath: pending.screenshotPath,
       model: settings.model,
-      prompt: settings.systemPrompt,
+      prompt,
       result: "",
       error: error.message || String(error),
     };
@@ -851,8 +862,10 @@ ipcMain.on("overlay-cancel", closeOverlay);
 ipcMain.on("overlay-selection", (_event, selection) => {
   runAnalysisFromSelection(selection);
 });
-ipcMain.on("confirm-accept", (_event, id) => {
-  acceptConfirmation(id);
+ipcMain.on("confirm-accept", (_event, id, prompt) => {
+  acceptConfirmation(id, prompt).catch((error) => {
+    console.error("Failed to accept screenshot confirmation:", error);
+  });
 });
 ipcMain.on("confirm-cancel", (_event, id) => {
   cancelConfirmation(id);
