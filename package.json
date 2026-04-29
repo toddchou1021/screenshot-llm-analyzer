@@ -5,7 +5,9 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "check": "node --check main.js && node --check preload.js && node --check renderer.js && node --check overlay.js && node --check popup.js && node --check confirm.js"
+    "check": "node --check main.js && node --check preload.js && node --check renderer.js && node --check overlay.js && node --check popup.js && node --check confirm.js",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --win nsis"
   },
   "keywords": [
     "electron",
@@ -19,8 +21,50 @@
     "type": "git",
     "url": "git+https://github.com/toddchou1021/screenshot-llm-analyzer.git"
   },
+  "build": {
+    "appId": "com.toddchou.screenshot-llm-analyzer",
+    "productName": "Screenshot Analyzer",
+    "directories": {
+      "output": "dist"
+    },
+    "toolsets": {
+      "winCodeSign": "1.1.0"
+    },
+    "afterPack": "scripts/afterPack.js",
+    "files": [
+      "**/*",
+      "!dist/**",
+      "!.git/**",
+      "!.gitignore",
+      "!README.md",
+      "!LICENSE",
+      "!Screenshot Analyzer.lnk"
+    ],
+    "win": {
+      "icon": "assets/icon.ico",
+      "signAndEditExecutable": false,
+      "signExts": [
+        "!.exe",
+        "!.dll"
+      ],
+      "verifyUpdateCodeSignature": false,
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Screenshot Analyzer"
+    }
+  },
   "type": "commonjs",
   "devDependencies": {
-    "electron": "^41.3.0"
+    "electron": "^41.3.0",
+    "electron-builder": "^26.8.1",
+    "rcedit": "^5.0.2"
   }
 }
