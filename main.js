@@ -658,9 +658,9 @@ async function runAnalysisFromSelection(selection) {
 
 function showConfirmationWindow(pending) {
   const confirmWindow = new BrowserWindow({
-    width: 760,
-    height: 450,
-    minWidth: 620,
+    width: 920,
+    height: 520,
+    minWidth: 760,
     minHeight: 360,
     title: "Confirm Screenshot",
     icon: APP_ICON_PATH,

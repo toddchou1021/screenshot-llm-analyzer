@@ -522,6 +522,9 @@ textarea {
     grid-template-columns: 1fr;
   }
 
+}
+
+@media (max-width: 620px) {
   .confirm-shell {
     grid-template-columns: 1fr;
   }
