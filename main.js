@@ -43,6 +43,8 @@ const pendingConfirmations = new Map();
 const APP_ICON_PATH = path.join(__dirname, "assets", "icon.ico");
 const APP_ICON_PNG_PATH = path.join(__dirname, "assets", "icon.png");
 
+app.setName("Screenshot Analyzer");
+
 if (process.platform === "win32") {
   app.setAppUserModelId("com.toddchou.screenshot-llm-analyzer");
 }
