@@ -1,5 +1,7 @@
 # Screenshot LLM Analyzer
 
+## Overview
+
 Screenshot it. AI it.
 
 Instead of copying text, saving images, or describing what you see, Screenshot Analyzer captures the selected screen area, applies your own prompt, and returns a focused AI response without switching tools or uploading files manually.
@@ -21,14 +23,6 @@ Useful for:
 - 針對螢幕上的內容提出具體問題，或取得靈感。
 - 翻譯與解讀影片、應用程式或網頁中的文字。
 - 摘要圖表、投影片或文件。
-
-## Overview
-
-A local Electron app for capturing a selected screen region and sending the screenshot to Gemini for analysis using a saved prompt.
-
-----------
-
-這是一個本機 Electron 應用程式，可擷取螢幕上的指定區域，並使用儲存好的提示詞將截圖送到 Gemini 進行分析。
 
 ## Features
 
