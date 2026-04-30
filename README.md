@@ -1,4 +1,4 @@
-# Screenshot LLM Analyzer
+# Screenshot Analyzer
 
 ## Overview
 
