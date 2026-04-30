@@ -57,11 +57,6 @@ Download the latest Windows installer from the [Releases page](https://github.co
 - Windows
 - A Gemini API key
 
-----------
-
-- Windows
-- Gemini API key
-
 ## Getting a free Gemini API key
 
 1. Go to [Google AI Studio](https://aistudio.google.com/).
@@ -70,7 +65,7 @@ Download the latest Windows installer from the [Releases page](https://github.co
 4. Click **Create API key**.
 5. Copy the key and paste it into the **Gemini API key** field in this app.
 
-Google offers a Gemini API free tier in eligible countries with lower rate limits for testing. See the official [Gemini API pricing](https://ai.google.dev/gemini-api/docs/pricing) and [rate limits](https://ai.google.dev/gemini-api/docs/quota) pages for the current free-tier details.
+Google offers a Gemini API free tier in eligible countries. See the official [Gemini API pricing](https://ai.google.dev/gemini-api/docs/pricing) and [rate limits](https://ai.google.dev/gemini-api/docs/quota) pages for the current free-tier details.
 
 As of 2026/04/29, Google provides 1,500 free requests per day for each of the two built-in Gemma 4 models listed below. Google can change free-tier quotas over time, and your active limits can be checked in Google AI Studio.
 
@@ -82,7 +77,7 @@ As of 2026/04/29, Google provides 1,500 free requests per day for each of the tw
 4. 點選 **Create API key**。
 5. 複製 API key，並貼到本應用程式的 **Gemini API key** 欄位。
 
-Google 在符合資格的國家或地區提供 Gemini API 免費方案，適合測試使用，但速率限制較低。請參考官方 [Gemini API pricing](https://ai.google.dev/gemini-api/docs/pricing) 與 [rate limits](https://ai.google.dev/gemini-api/docs/quota) 頁面確認目前的免費方案細節。
+Google 在符合資格的國家或地區提供 Gemini API 免費方案。請參考官方 [Gemini API pricing](https://ai.google.dev/gemini-api/docs/pricing) 與 [rate limits](https://ai.google.dev/gemini-api/docs/quota) 頁面確認目前的免費方案細節。
 
 截至 2026/04/29，Google 針對下方兩個內建 Gemma 4 模型各提供每日 1,500 次免費請求。Google 可能隨時調整免費額度，你可以在 Google AI Studio 查看目前帳號的實際限制。
 
