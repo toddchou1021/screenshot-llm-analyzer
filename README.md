@@ -32,6 +32,30 @@ Screenshot Analyzer is a Windows Electron app built with HTML, CSS, and JavaScri
 
 Screenshot Analyzer 是一款使用 HTML、CSS 和 JavaScript 建構的 Windows Electron 應用程式。它使用 Electron 來實現桌面視窗、系統匣／背景執行、全域快捷鍵和螢幕截圖功能，然後將選取的螢幕截圖傳送至 Gemini Gemma 模型。Electron Builder 則用於將該應用程式封裝成 Windows 安裝程式。
 
+## Getting a free Gemini API key
+
+1. Go to [Google AI Studio](https://aistudio.google.com/).
+2. Sign in with your Google account.
+3. Open the [API keys page](https://aistudio.google.com/app/apikey).
+4. Click **Create API key**.
+5. Copy the key and paste it into the **Gemini API key** field in this app.
+
+Google offers a Gemini API free tier in eligible countries. See the official [Gemini API pricing](https://ai.google.dev/gemini-api/docs/pricing) and [rate limits](https://ai.google.dev/gemini-api/docs/quota) pages for the current free-tier details.
+
+As of 2026/04/29, Google provides 1,500 free requests per day for each of the two built-in Gemma 4 models listed below. Google can change free-tier quotas over time, and your active limits can be checked in Google AI Studio.
+
+----------
+
+1. 前往 [Google AI Studio](https://aistudio.google.com/)。
+2. 使用你的 Google 帳號登入。
+3. 開啟 [API keys 頁面](https://aistudio.google.com/app/apikey)。
+4. 點選 **Create API key**。
+5. 複製 API key，並貼到本應用程式的 **Gemini API key** 欄位。
+
+Google 在符合資格的國家或地區提供 Gemini API 免費方案。請參考官方 [Gemini API pricing](https://ai.google.dev/gemini-api/docs/pricing) 與 [rate limits](https://ai.google.dev/gemini-api/docs/quota) 頁面確認目前的免費方案細節。
+
+截至 2026/04/29，Google 針對下方兩個內建 Gemma 4 模型各提供每日 1,500 次免費請求。Google 可能隨時調整免費額度，你可以在 Google AI Studio 查看目前帳號的實際限制。
+
 ## Features
 
 - Runs as a desktop app with a tray icon.
@@ -61,30 +85,6 @@ Screenshot Analyzer 是一款使用 HTML、CSS 和 JavaScript 建構的 Windows 
 - Windows
 - A Gemini API key
 
-## Getting a free Gemini API key
-
-1. Go to [Google AI Studio](https://aistudio.google.com/).
-2. Sign in with your Google account.
-3. Open the [API keys page](https://aistudio.google.com/app/apikey).
-4. Click **Create API key**.
-5. Copy the key and paste it into the **Gemini API key** field in this app.
-
-Google offers a Gemini API free tier in eligible countries. See the official [Gemini API pricing](https://ai.google.dev/gemini-api/docs/pricing) and [rate limits](https://ai.google.dev/gemini-api/docs/quota) pages for the current free-tier details.
-
-As of 2026/04/29, Google provides 1,500 free requests per day for each of the two built-in Gemma 4 models listed below. Google can change free-tier quotas over time, and your active limits can be checked in Google AI Studio.
-
-----------
-
-1. 前往 [Google AI Studio](https://aistudio.google.com/)。
-2. 使用你的 Google 帳號登入。
-3. 開啟 [API keys 頁面](https://aistudio.google.com/app/apikey)。
-4. 點選 **Create API key**。
-5. 複製 API key，並貼到本應用程式的 **Gemini API key** 欄位。
-
-Google 在符合資格的國家或地區提供 Gemini API 免費方案。請參考官方 [Gemini API pricing](https://ai.google.dev/gemini-api/docs/pricing) 與 [rate limits](https://ai.google.dev/gemini-api/docs/quota) 頁面確認目前的免費方案細節。
-
-截至 2026/04/29，Google 針對下方兩個內建 Gemma 4 模型各提供每日 1,500 次免費請求。Google 可能隨時調整免費額度，你可以在 Google AI Studio 查看目前帳號的實際限制。
-
 ## Installation
 
 Download the latest Windows installer from the [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest) (`Screenshot.Analyzer.Setup.1.0.4.exe`).
@@ -95,7 +95,7 @@ The app stores settings and screenshots under:
 %APPDATA%\screenshot-llm-analyzer
 ```
 
-API keys are saved locally in that settings folder and are not stored in this repository.
+API keys are saved locally in that settings folder.
 
 ----------
 
@@ -107,7 +107,7 @@ API keys are saved locally in that settings folder and are not stored in this re
 %APPDATA%\screenshot-llm-analyzer
 ```
 
-API key 只會儲存在本機設定資料夾中，不會存放在此 GitHub repository。
+API key 只會儲存在本機設定資料夾中。
 
 ## Developer Mode
 
