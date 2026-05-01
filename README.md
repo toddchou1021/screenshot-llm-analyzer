@@ -4,7 +4,7 @@
 
 Screenshot it. AI it.
 
-Instead of copying text, saving images, or describing what you see, Screenshot Analyzer captures the selected screen area, applies saved prompt, and returns a focused AI response without switching tools or uploading files manually.
+Instead of copying text, saving images, or describing what you see, Screenshot Analyzer captures the selected screen area, applies saved reusable prompts, and returns a focused AI response without switching tools or uploading files manually.
 
 Useful for:
 
@@ -20,7 +20,7 @@ Screenshot Analyzer is a Windows Electron app built with HTML, CSS, and JavaScri
 
 截圖，然後交給 AI。
 
-不用複製文字、儲存圖片，或花時間描述你看到的內容。Screenshot Analyzer 可以擷取你選取的螢幕區域，套用已經儲存的提示詞，並在不切換工具或手動上傳檔案的情況下回傳聚焦的 AI 回應。
+不用複製文字、儲存圖片，或花時間描述你看到的內容。Screenshot Analyzer 可以擷取你選取的螢幕區域，套用已儲存的可重複使用提示詞，並在不切換工具或手動上傳檔案的情況下回傳聚焦的 AI 回應。
 
 適合用來：
 
@@ -31,6 +31,32 @@ Screenshot Analyzer is a Windows Electron app built with HTML, CSS, and JavaScri
 請從 [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest) 下載最新的 Windows 安裝檔（`Screenshot.Analyzer.Setup.1.0.4.exe`）。
 
 Screenshot Analyzer 是一款使用 HTML、CSS 和 JavaScript 建構的 Windows Electron 應用程式。它使用 Electron 來實現桌面視窗、系統匣／背景執行、全域快捷鍵和螢幕截圖功能，然後將選取的螢幕截圖傳送至 Gemini Gemma 模型。Electron Builder 則用於將該應用程式封裝成 Windows 安裝程式。
+
+## Usage
+
+1. Start Screenshot Analyzer.
+2. Paste your Gemini API key.
+3. Choose a model.
+4. Enter or select a saved system prompt.
+5. Click `Save Settings`.
+6. Click "X" to close the window. The app will keep running in the background; look for its icon in the system tray (bottom-right corner).
+7. Press Alt+S anytime you want to analyze your screen.
+8. Drag to select an area.
+9. Press Enter to analyze the screenshot or Esc to cancel. Alternatively, edit your saved prompt.
+10. Wait a few seconds for the result to pop up.
+
+----------
+
+1. 啟動 Screenshot Analyzer。
+2. 貼上你的 Gemini API key。
+3. 選擇模型。
+4. 輸入或選擇已儲存的 system prompt。
+5. 點選 `Save Settings`。
+6. 點擊「X」關閉視窗。應用程式將繼續在背景執行；請在系統匣（右下角）尋找其圖示。
+7. 隨時按下 Alt+S 來分析您的螢幕畫面。
+8. 拖曳選取要分析的區域。
+9. 按下 Enter 分析截圖，或按 Esc 取消。您也可以編輯已儲存的提示詞。
+10. 等待幾秒鐘，結果即會彈出。
 
 ## Getting a free Gemini API key
 
@@ -144,28 +170,6 @@ The app includes two selectable Gemini API model IDs:
 - `gemma-4-26b-a4b-it`
 
 建議預設使用 `gemma-4-26b-a4b-it`。如果你想針對特定截圖或提示詞比較輸出品質，也可以選擇 `gemma-4-31b-it`。
-
-## Usage
-
-1. Start Screenshot Analyzer.
-2. Paste your Gemini API key.
-3. Choose a model.
-4. Enter or select a saved system prompt.
-5. Click `Save Settings`.
-6. Press `Alt+S`.
-7. Drag to select an area.
-8. Press `Enter` to analyze the screenshot or `Esc` to cancel.
-
-----------
-
-1. 啟動 Screenshot Analyzer。
-2. 貼上你的 Gemini API key。
-3. 選擇模型。
-4. 輸入或選擇已儲存的 system prompt。
-5. 點選 `Save Settings`。
-6. 按 `Alt+S`。
-7. 拖曳選取要分析的區域。
-8. 按 `Enter` 分析截圖，或按 `Esc` 取消。
 
 ## Notes
 
