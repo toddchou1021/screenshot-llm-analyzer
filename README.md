@@ -4,7 +4,7 @@
 
 Screenshot it. AI it.
 
-Instead of copying text, saving images, or describing what you see, Screenshot Analyzer captures the selected screen area, applies your own prompt, and returns a focused AI response without switching tools or uploading files manually.
+Instead of copying text, saving images, or describing what you see, Screenshot Analyzer captures the selected screen area, applies saved prompt, and returns a focused AI response without switching tools or uploading files manually.
 
 Useful for:
 
@@ -20,7 +20,7 @@ Screenshot Analyzer is a Windows Electron app built with HTML, CSS, and JavaScri
 
 截圖，然後交給 AI。
 
-不用複製文字、儲存圖片，或花時間描述你看到的內容。Screenshot Analyzer 可以擷取你選取的螢幕區域，套用你自己的提示詞，並在不切換工具或手動上傳檔案的情況下回傳聚焦的 AI 回應。
+不用複製文字、儲存圖片，或花時間描述你看到的內容。Screenshot Analyzer 可以擷取你選取的螢幕區域，套用已經儲存的提示詞，並在不切換工具或手動上傳檔案的情況下回傳聚焦的 AI 回應。
 
 適合用來：
 
