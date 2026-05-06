@@ -8,7 +8,14 @@ let activeId = "";
 let selectedPrompt = "";
 let settled = false;
 
+function applyTheme(theme) {
+  const normalizedTheme = theme === "industrial" ? "industrial" : "cyberpunk";
+  document.documentElement.dataset.theme = normalizedTheme;
+  document.body.dataset.theme = normalizedTheme;
+}
+
 window.screenshotApp.onConfirmEntry((entry) => {
+  applyTheme(entry.uiTheme);
   activeId = entry.id;
   selectedPrompt = entry.prompt || "";
   confirmImage.src = entry.screenshotUrl;

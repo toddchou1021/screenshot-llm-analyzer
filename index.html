@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Screenshot Analyzer</title>
+    <script src="./theme-init.js"></script>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
@@ -24,8 +25,26 @@
             </div>
           </div>
           <div class="actions">
-            <button id="captureButton" type="button">Capture</button>
-            <button id="folderButton" type="button">Screenshots</button>
+            <div class="mode-controls">
+              <label class="mode-toggle" title="Switch capture confirmation behavior">
+                <span id="directAnalysisToggleLabel">Confirm First</span>
+                <input id="directAnalysisToggleInput" type="checkbox" />
+                <span class="mode-toggle-track" aria-hidden="true">
+                  <span class="mode-toggle-thumb"></span>
+                </span>
+              </label>
+              <label class="theme-toggle" title="Switch UI design">
+                <span id="themeToggleLabel">Cyberpunk</span>
+                <input id="themeToggleInput" type="checkbox" />
+                <span class="theme-toggle-track" aria-hidden="true">
+                  <span class="theme-toggle-thumb"></span>
+                </span>
+              </label>
+            </div>
+            <div class="action-buttons">
+              <button id="captureButton" type="button">Capture</button>
+              <button id="folderButton" type="button">Screenshots</button>
+            </div>
           </div>
         </header>
 

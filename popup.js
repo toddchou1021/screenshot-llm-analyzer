@@ -12,6 +12,12 @@ const retryButton = document.querySelector("#retryButton");
 let activeEntry;
 let isRerunning = false;
 
+function applyTheme(theme) {
+  const normalizedTheme = theme === "industrial" ? "industrial" : "cyberpunk";
+  document.documentElement.dataset.theme = normalizedTheme;
+  document.body.dataset.theme = normalizedTheme;
+}
+
 window.screenshotApp.onPopupEntry((entry) => {
   renderEntry(entry);
 });
@@ -67,6 +73,7 @@ async function loadAdjacentResult(direction) {
 
 function renderEntry(entry) {
   activeEntry = entry;
+  applyTheme(entry.uiTheme);
   popupTitle.textContent = entry.error ? "Analysis Error" : "Analysis Result";
   popupMeta.textContent = `${new Date(entry.createdAt).toLocaleString()} · ${entry.model}`;
   setModelValue(entry.model);

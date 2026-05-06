@@ -27,7 +27,11 @@ const DEFAULT_SETTINGS = {
   hotkey: "Alt+S",
   systemPrompt: DEFAULT_SYSTEM_PROMPT,
   promptHistory: [],
+  uiTheme: "cyberpunk",
+  directAnalysisMode: false,
 };
+
+const GEMINI_TRANSIENT_RETRY_DELAYS_MS = [700, 1400];
 
 let mainWindow;
 let overlayWindow;
@@ -137,6 +141,8 @@ async function loadState() {
   settings.model = normalizeModel(settings.model);
   settings.model = normalizeGeminiModel(settings.model);
   settings.hotkey = normalizeHotkey(settings.hotkey);
+  settings.uiTheme = normalizeUiTheme(settings.uiTheme);
+  settings.directAnalysisMode = normalizeBooleanSetting(settings.directAnalysisMode);
   settings.systemPrompt = normalizePrompt(settings.systemPrompt) || DEFAULT_SYSTEM_PROMPT;
   settings.promptHistory = normalizePromptHistory(settings.promptHistory, settings.systemPrompt);
   const loadedHistory = await readJson(historyPath(), []);
@@ -152,6 +158,10 @@ async function saveSettings(nextSettings, { rememberPrompt = true } = {}) {
     apiKey: String(nextSettings.apiKey ?? settings.apiKey ?? "").trim(),
     model,
     hotkey: normalizeHotkey(nextSettings.hotkey ?? settings.hotkey),
+    uiTheme: normalizeUiTheme(nextSettings.uiTheme ?? settings.uiTheme),
+    directAnalysisMode: normalizeBooleanSetting(
+      nextSettings.directAnalysisMode ?? settings.directAnalysisMode
+    ),
     systemPrompt: nextPrompt || DEFAULT_SYSTEM_PROMPT,
   };
   settings.promptHistory = normalizePromptHistory(settings.promptHistory, settings.systemPrompt);
@@ -198,6 +208,14 @@ async function deletePrompt(prompt) {
 
 function normalizePrompt(prompt) {
   return String(prompt ?? "").trim();
+}
+
+function normalizeUiTheme(theme) {
+  return theme === "industrial" ? "industrial" : "cyberpunk";
+}
+
+function normalizeBooleanSetting(value) {
+  return value === true || value === "true";
 }
 
 function normalizePromptHistory(promptHistory, activePrompt) {
@@ -565,45 +583,55 @@ async function analyzeScreenshot(filePath, prompt = settings.systemPrompt, model
   const base64Image = await fs.readFile(filePath, "base64");
   const model = normalizeGeminiModel(modelName);
   const userPrompt = normalizePrompt(prompt) || settings.systemPrompt;
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(
-      model
-    )}:generateContent`,
-    {
+  const requestUrl = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(
+    model
+  )}:generateContent`;
+  const requestBody = JSON.stringify({
+    system_instruction: {
+      parts: [
+        {
+          text: `${FIXED_OUTPUT_INSTRUCTION}\n\nUser prompt:\n${userPrompt}`,
+        },
+      ],
+    },
+    contents: [
+      {
+        role: "user",
+        parts: [
+          {
+            inline_data: {
+              mime_type: "image/png",
+              data: base64Image,
+            },
+          },
+        ],
+      },
+    ],
+  });
+
+  let json = {};
+  let response;
+  for (let attempt = 0; attempt <= GEMINI_TRANSIENT_RETRY_DELAYS_MS.length; attempt += 1) {
+    response = await fetch(requestUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "x-goog-api-key": settings.apiKey,
       },
-      body: JSON.stringify({
-        system_instruction: {
-          parts: [
-            {
-              text: `${FIXED_OUTPUT_INSTRUCTION}\n\nUser prompt:\n${userPrompt}`,
-            },
-          ],
-        },
-        contents: [
-          {
-            role: "user",
-            parts: [
-              {
-                inline_data: {
-                  mime_type: "image/png",
-                  data: base64Image,
-                },
-              },
-            ],
-          },
-        ],
-      }),
-    }
-  );
+      body: requestBody,
+    });
+    json = await response.json().catch(() => ({}));
 
-  const json = await response.json().catch(() => ({}));
+    if (response.ok || response.status < 500 || attempt === GEMINI_TRANSIENT_RETRY_DELAYS_MS.length) {
+      break;
+    }
+
+    await sleep(GEMINI_TRANSIENT_RETRY_DELAYS_MS[attempt]);
+  }
+
   if (!response.ok) {
     const message = json?.error?.message || `Gemini API returned HTTP ${response.status}.`;
-    throw new Error(message);
+    throw new Error(`Gemini API returned HTTP ${response.status}: ${message}`);
   }
 
   const text =
@@ -614,6 +642,10 @@ async function analyzeScreenshot(filePath, prompt = settings.systemPrompt, model
       .trim() || "";
 
   return cleanAnalysisText(text) || JSON.stringify(json, null, 2);
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function normalizeModel(model) {
@@ -665,13 +697,20 @@ async function runAnalysisFromSelection(selection) {
     screenshotPath = await captureSelection(selection);
     overlayCaptureInProgress = false;
     resumeCaptureHotkey(250);
-    showConfirmationWindow({
+
+    const pending = {
       id,
       createdAt,
       screenshotPath,
       model: settings.model,
       prompt: settings.systemPrompt,
-    });
+    };
+
+    if (settings.directAnalysisMode) {
+      await analyzeConfirmedScreenshot(pending);
+    } else {
+      showConfirmationWindow(pending);
+    }
     return;
   } catch (error) {
     errorEntry = {
@@ -725,6 +764,7 @@ function showConfirmationWindow(pending) {
       screenshotUrl: nativeImage.createFromPath(pending.screenshotPath).toDataURL(),
       prompt: settings.systemPrompt,
       promptHistory: settings.promptHistory || [],
+      uiTheme: settings.uiTheme,
     });
   });
 
@@ -834,6 +874,7 @@ function showResultPopup(entry) {
 function toRendererEntry(entry) {
   return {
     ...entry,
+    uiTheme: settings.uiTheme,
     screenshotUrl: entry.screenshotPath ? nativeImage.createFromPath(entry.screenshotPath).toDataURL() : "",
   };
 }
@@ -917,6 +958,10 @@ async function retryAnalysis(id, options = {}) {
 }
 
 ipcMain.handle("get-state", () => appState());
+
+ipcMain.on("get-initial-theme", (event) => {
+  event.returnValue = normalizeUiTheme(settings.uiTheme);
+});
 
 ipcMain.handle("save-settings", async (_event, nextSettings) => {
   return saveSettings(nextSettings);

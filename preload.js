@@ -1,6 +1,7 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("screenshotApp", {
+  getInitialTheme: () => ipcRenderer.sendSync("get-initial-theme"),
   getState: () => ipcRenderer.invoke("get-state"),
   saveSettings: (settings) => ipcRenderer.invoke("save-settings", settings),
   activatePrompt: (prompt) => ipcRenderer.invoke("activate-prompt", prompt),
