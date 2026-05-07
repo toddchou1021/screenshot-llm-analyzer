@@ -4,6 +4,11 @@ out/
 release/
 *.log
 
+# Rendered marketing media
+*.mp4
+*.mov
+*.webm
+
 .env
 .env.*
 
