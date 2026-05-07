@@ -6,12 +6,12 @@ This is a Windows-focused Electron app for capturing a selected screen region an
 
 - `main.js` contains the Electron main process, tray behavior, capture flow, and storage.
 - `preload.js` exposes the safe renderer bridge.
-- `renderer.js`, `index.html`, and `styles.css` drive the main settings/history UI.
+- `renderer.js`, `index.html`, `styles.css`, and `theme-init.js` drive the main settings/history UI and early theme setup.
 - `popup.*` and `confirm.*` support secondary app windows.
 - `overlay.js`, `overlay.html`, and `overlay.css` implement region selection.
 - `assets/` contains app icons and UI imagery.
 - `scripts/afterPack.js` stamps Windows executable metadata.
-- `dist/`, `node_modules/`, logs, env files, and shortcut files are local artifacts; do not commit them.
+- `dist/`, `node_modules/`, rendered media exports, logs, env files, and shortcut files are local artifacts; do not commit them.
 
 ## Build, Test, and Development Commands
 
