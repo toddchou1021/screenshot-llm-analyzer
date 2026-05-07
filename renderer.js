@@ -7,6 +7,10 @@ const saveStatus = document.querySelector("#saveStatus");
 const captureButton = document.querySelector("#captureButton");
 const folderButton = document.querySelector("#folderButton");
 const clearButton = document.querySelector("#clearButton");
+const directAnalysisToggleInput = document.querySelector("#directAnalysisToggleInput");
+const directAnalysisToggleLabel = document.querySelector("#directAnalysisToggleLabel");
+const themeToggleInput = document.querySelector("#themeToggleInput");
+const themeToggleLabel = document.querySelector("#themeToggleLabel");
 const hotkeyStatus = document.querySelector("#hotkeyStatus");
 const promptList = document.querySelector("#promptList");
 const historyList = document.querySelector("#historyList");
@@ -19,10 +23,34 @@ let currentState;
 let visiblePromptCount = LIST_BATCH_SIZE;
 let visibleHistoryCount = LIST_BATCH_SIZE;
 
+function applyTheme(theme) {
+  const normalizedTheme = theme === "industrial" ? "industrial" : "cyberpunk";
+  document.documentElement.dataset.theme = normalizedTheme;
+  document.body.dataset.theme = normalizedTheme;
+  if (themeToggleInput) {
+    themeToggleInput.checked = normalizedTheme === "industrial";
+  }
+  if (themeToggleLabel) {
+    themeToggleLabel.textContent = normalizedTheme === "industrial" ? "Industrial" : "Cyberpunk";
+  }
+}
+
+function applyDirectAnalysisMode(enabled) {
+  const isDirect = Boolean(enabled);
+  if (directAnalysisToggleInput) {
+    directAnalysisToggleInput.checked = isDirect;
+  }
+  if (directAnalysisToggleLabel) {
+    directAnalysisToggleLabel.textContent = isDirect ? "Direct Analysis" : "Confirm First";
+  }
+}
+
 function renderState(state) {
   currentState = state;
   const { settings, history, registeredHotkey } = state;
 
+  applyTheme(settings.uiTheme);
+  applyDirectAnalysisMode(settings.directAnalysisMode);
   if (document.activeElement !== apiKeyInput) apiKeyInput.value = settings.apiKey || "";
   if (document.activeElement !== modelInput) setModelValue(settings.model || "");
   if (document.activeElement !== hotkeyInput) hotkeyInput.value = settings.hotkey || "";
@@ -191,6 +219,8 @@ async function saveSettings() {
       model: modelInput.value,
       hotkey: hotkeyInput.value,
       systemPrompt: promptInput.value,
+      uiTheme: themeToggleInput?.checked ? "industrial" : "cyberpunk",
+      directAnalysisMode: Boolean(directAnalysisToggleInput?.checked),
     });
     renderState({ ...currentState, ...state });
     saveStatus.textContent = "Saved";
@@ -215,6 +245,40 @@ modelInput.addEventListener("change", async () => {
     saveStatus.textContent = "Model saved";
   } catch (error) {
     saveStatus.textContent = error.message || "Model save failed";
+  } finally {
+    setTimeout(() => {
+      saveStatus.textContent = "";
+    }, 2200);
+  }
+});
+directAnalysisToggleInput?.addEventListener("change", async () => {
+  const directAnalysisMode = directAnalysisToggleInput.checked;
+  applyDirectAnalysisMode(directAnalysisMode);
+  saveStatus.textContent = "Saving mode...";
+  try {
+    const state = await window.screenshotApp.saveSettings({ directAnalysisMode });
+    renderState({ ...currentState, ...state });
+    saveStatus.textContent = "Mode saved";
+  } catch (error) {
+    saveStatus.textContent = error.message || "Mode save failed";
+    applyDirectAnalysisMode(currentState?.settings?.directAnalysisMode);
+  } finally {
+    setTimeout(() => {
+      saveStatus.textContent = "";
+    }, 2200);
+  }
+});
+themeToggleInput?.addEventListener("change", async () => {
+  const uiTheme = themeToggleInput.checked ? "industrial" : "cyberpunk";
+  applyTheme(uiTheme);
+  saveStatus.textContent = "Saving theme...";
+  try {
+    const state = await window.screenshotApp.saveSettings({ uiTheme });
+    renderState({ ...currentState, ...state });
+    saveStatus.textContent = "Theme saved";
+  } catch (error) {
+    saveStatus.textContent = error.message || "Theme save failed";
+    applyTheme(currentState?.settings?.uiTheme);
   } finally {
     setTimeout(() => {
       saveStatus.textContent = "";

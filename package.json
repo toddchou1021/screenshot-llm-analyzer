@@ -1,12 +1,12 @@
 {
   "name": "screenshot-llm-analyzer",
   "productName": "Screenshot Analyzer",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Background screenshot analyzer using the Gemini API.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "check": "node --check main.js && node --check preload.js && node --check renderer.js && node --check overlay.js && node --check popup.js && node --check confirm.js",
+    "check": "node --check main.js && node --check preload.js && node --check renderer.js && node --check theme-init.js && node --check overlay.js && node --check popup.js && node --check confirm.js",
     "pack": "electron-builder --dir",
     "dist": "electron-builder --win nsis"
   },
@@ -39,7 +39,11 @@
       "!.gitignore",
       "!README.md",
       "!LICENSE",
-      "!Screenshot Analyzer.lnk"
+      "!Screenshot Analyzer.lnk",
+      "!marketing-video/**",
+      "!*.mp4",
+      "!*.mov",
+      "!*.webm"
     ],
     "win": {
       "icon": "assets/icon.ico",
