@@ -657,7 +657,7 @@ function normalizeModel(model) {
 
 function normalizeGeminiModel(model) {
   const normalizedModel = normalizeModel(model);
-  return normalizedModel.startsWith("gemma-") ? normalizedModel : DEFAULT_SETTINGS.model;
+  return /^(gemma|gemini)-/.test(normalizedModel) ? normalizedModel : DEFAULT_SETTINGS.model;
 }
 
 function normalizeHotkey(hotkey) {

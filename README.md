@@ -12,9 +12,9 @@ Useful for:
 - Translating and interpreting text in videos, apps, or webpages.
 - Summarizing charts, slides, or documents.
 
-Download the latest Windows installer from the [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest) (`Screenshot.Analyzer.Setup.1.0.5.exe`).
+Download the latest Windows installer from the [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest) (`Screenshot.Analyzer.Setup.1.0.6.exe`).
 
-Screenshot Analyzer is a Windows Electron app built with HTML, CSS, and JavaScript. It uses Electron for desktop windows, tray/background behavior, global hotkeys, and screen capture, then sends selected screenshots to Gemini Gemma models. Electron Builder packages the app into a Windows installer.
+Screenshot Analyzer is a Windows Electron app built with HTML, CSS, and JavaScript. It uses Electron for desktop windows, tray/background behavior, global hotkeys, and screen capture, then sends selected screenshots to Gemini API models. Electron Builder packages the app into a Windows installer.
 
 ----------
 
@@ -28,9 +28,9 @@ Screenshot Analyzer is a Windows Electron app built with HTML, CSS, and JavaScri
 - 翻譯與解讀影片、應用程式或網頁中的文字。
 - 摘要圖表、投影片或文件。
 
-請從 [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest) 下載最新的 Windows 安裝檔（`Screenshot.Analyzer.Setup.1.0.5.exe`）。
+請從 [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest) 下載最新的 Windows 安裝檔（`Screenshot.Analyzer.Setup.1.0.6.exe`）。
 
-Screenshot Analyzer 是一款使用 HTML、CSS 和 JavaScript 建構的 Windows Electron 應用程式。它使用 Electron 來實現桌面視窗、系統匣／背景執行、全域快捷鍵和螢幕截圖功能，然後將選取的螢幕截圖傳送至 Gemini Gemma 模型。Electron Builder 則用於將該應用程式封裝成 Windows 安裝程式。
+Screenshot Analyzer 是一款使用 HTML、CSS 和 JavaScript 建構的 Windows Electron 應用程式。它使用 Electron 來實現桌面視窗、系統匣／背景執行、全域快捷鍵和螢幕截圖功能，然後將選取的螢幕截圖傳送至 Gemini API 模型。Electron Builder 則用於將該應用程式封裝成 Windows 安裝程式。
 
 ## Usage
 
@@ -74,7 +74,7 @@ Screenshot Analyzer 是一款使用 HTML、CSS 和 JavaScript 建構的 Windows 
 
 Google offers a Gemini API free tier in eligible countries. See the official [Gemini API pricing](https://ai.google.dev/gemini-api/docs/pricing) and [rate limits](https://ai.google.dev/gemini-api/docs/quota) pages for the current free-tier details.
 
-As of 2026/04/29, Google provides 1,500 free requests per day for each of the two built-in Gemma 4 models listed below. Google can change free-tier quotas over time, and your active limits can be checked in Google AI Studio.
+Google can change free-tier quotas over time, and active limits vary by model. Check your current limits in Google AI Studio.
 
 ----------
 
@@ -97,7 +97,7 @@ Google 在符合資格的國家或地區提供 Gemini API 免費方案。請參�
 - Turn on Direct Analysis to skip the confirmation window and analyze immediately.
 - Press `Enter` to analyze or `Esc` to cancel.
 - Save a Gemini API key and reusable prompts.
-- Switch between supported Gemma models.
+- Switch between supported Gemini API models.
 - Switch between Cyberpunk and Industrial UI designs.
 - View previous analysis results in chronological history.
 - Delete history entries and their saved screenshots.
@@ -123,7 +123,7 @@ Google 在符合資格的國家或地區提供 Gemini API 免費方案。請參�
 
 ## Installation
 
-Download the latest Windows installer from the [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest) (`Screenshot.Analyzer.Setup.1.0.5.exe`).
+Download the latest Windows installer from the [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest) (`Screenshot.Analyzer.Setup.1.0.6.exe`).
 
 The app stores settings and screenshots under:
 
@@ -135,7 +135,7 @@ API keys are saved locally in that settings folder.
 
 ----------
 
-請從 [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest) 下載最新的 Windows 安裝檔（`Screenshot.Analyzer.Setup.1.0.5.exe`）。
+請從 [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest) 下載最新的 Windows 安裝檔（`Screenshot.Analyzer.Setup.1.0.6.exe`）。
 
 應用程式會將設定與截圖儲存在：
 
@@ -165,21 +165,27 @@ npm start
 
 ## Built-in models
 
-The app includes two selectable Gemini API model IDs:
+The app includes three selectable Gemini API model IDs:
 
+- `gemini-3.1-flash-lite`
 - `gemma-4-31b-it`
 - `gemma-4-26b-a4b-it`
 
-`gemma-4-26b-a4b-it` is the recommended default. `gemma-4-31b-it` is also available if you want to compare output quality for a specific screenshot or prompt.
+`gemma-4-26b-a4b-it` is the recommended default. `gemini-3.1-flash-lite` and `gemma-4-31b-it` are also available if you want to compare output quality, speed, or quota behavior for a specific screenshot or prompt.
+
+Selecting a Gemini model does not enable web search by itself. Web search or Google Search grounding requires a separate app integration and may have separate billing or quota behavior.
 
 ----------
 
-本應用程式內建兩個可選的 Gemini API model ID：
+本應用程式內建三個可選的 Gemini API model ID：
 
+- `gemini-3.1-flash-lite`
 - `gemma-4-31b-it`
 - `gemma-4-26b-a4b-it`
 
-建議預設使用 `gemma-4-26b-a4b-it`。如果你想針對特定截圖或提示詞比較輸出品質，也可以選擇 `gemma-4-31b-it`。
+建議預設使用 `gemma-4-26b-a4b-it`。如果你想針對特定截圖或提示詞比較輸出品質、速度或配額使用情況，也可以選擇 `gemini-3.1-flash-lite` 或 `gemma-4-31b-it`。
+
+選擇 Gemini 模型本身不會啟用網路搜尋。若要使用網路搜尋或 Google Search grounding，需要額外的應用程式整合，且可能有獨立的計費或配額規則。
 
 ## Notes
 
