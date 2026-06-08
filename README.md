@@ -12,7 +12,7 @@ Useful for:
 - Translating and interpreting text in videos, apps, or webpages.
 - Summarizing charts, slides, or documents.
 
-Download the latest Windows installer from the [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest) (`Screenshot.Analyzer.Setup.1.0.6.exe`).
+Download the latest Windows installer from the [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest) (`Screenshot.Analyzer.Setup.1.0.7.exe`).
 
 Screenshot Analyzer is a Windows Electron app built with HTML, CSS, and JavaScript. It uses Electron for desktop windows, tray/background behavior, global hotkeys, and screen capture, then sends selected screenshots to Gemini API models. Electron Builder packages the app into a Windows installer.
 
@@ -28,7 +28,7 @@ Screenshot Analyzer is a Windows Electron app built with HTML, CSS, and JavaScri
 - 翻譯與解讀影片、應用程式或網頁中的文字。
 - 摘要圖表、投影片或文件。
 
-請從 [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest) 下載最新的 Windows 安裝檔（`Screenshot.Analyzer.Setup.1.0.6.exe`）。
+請從 [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest) 下載最新的 Windows 安裝檔（`Screenshot.Analyzer.Setup.1.0.7.exe`）。
 
 Screenshot Analyzer 是一款使用 HTML、CSS 和 JavaScript 建構的 Windows Electron 應用程式。它使用 Electron 來實現桌面視窗、系統匣／背景執行、全域快捷鍵和螢幕截圖功能，然後將選取的螢幕截圖傳送至 Gemini API 模型。Electron Builder 則用於將該應用程式封裝成 Windows 安裝程式。
 
@@ -123,7 +123,7 @@ Google 在符合資格的國家或地區提供 Gemini API 免費方案。請參�
 
 ## Installation
 
-Download the latest Windows installer from the [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest) (`Screenshot.Analyzer.Setup.1.0.6.exe`).
+Download the latest Windows installer from the [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest) (`Screenshot.Analyzer.Setup.1.0.7.exe`).
 
 The app stores settings and screenshots under:
 
@@ -135,7 +135,7 @@ API keys are saved locally in that settings folder.
 
 ----------
 
-請從 [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest) 下載最新的 Windows 安裝檔（`Screenshot.Analyzer.Setup.1.0.6.exe`）。
+請從 [Releases page](https://github.com/toddchou1021/screenshot-llm-analyzer/releases/latest) 下載最新的 Windows 安裝檔（`Screenshot.Analyzer.Setup.1.0.7.exe`）。
 
 應用程式會將設定與截圖儲存在：
 

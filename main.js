@@ -436,17 +436,11 @@ async function startCaptureOverlay() {
 
   pauseCaptureHotkey();
   const bounds = virtualBounds();
-  let previewScreens = [];
-  try {
-    previewScreens = await captureOverlayPreview(bounds);
-  } catch (error) {
-    sendTransientStatus(error.message || "Could not capture screen preview.");
-  }
   overlayWindow = new BrowserWindow({
     ...bounds,
     frame: false,
     icon: APP_ICON_PATH,
-    transparent: false,
+    transparent: true,
     resizable: false,
     movable: false,
     fullscreenable: false,
@@ -454,7 +448,7 @@ async function startCaptureOverlay() {
     alwaysOnTop: true,
     focusable: true,
     show: false,
-    backgroundColor: "#101214",
+    backgroundColor: "#00000000",
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
@@ -469,12 +463,26 @@ async function startCaptureOverlay() {
     overlayWindow.focus();
     overlayWindow.webContents.send("overlay-ready", {
       bounds,
-      screens: previewScreens,
+      screens: [],
     });
+    loadOverlayPreview(bounds, overlayWindow);
   });
   overlayWindow.on("closed", () => {
     overlayWindow = null;
   });
+}
+
+async function loadOverlayPreview(bounds, targetWindow) {
+  try {
+    const previewScreens = await captureOverlayPreview(bounds);
+    if (!targetWindow || targetWindow.isDestroyed()) return;
+    targetWindow.webContents.send("overlay-ready", {
+      bounds,
+      screens: previewScreens,
+    });
+  } catch (error) {
+    sendTransientStatus(error.message || "Could not capture screen preview.");
+  }
 }
 
 async function captureOverlayPreview(bounds) {
